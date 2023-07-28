@@ -4,19 +4,17 @@ run-name: ${{ github.actor }} trigger workflow
 
 on:
   schedule:
-    - cron "*/15 * * * *"
+    - cron: "*/15 * * * *"
 
 jobs:
-  keep-live:
+  keep-live-job:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
-
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
-      
+
       - name: Execute Workflow
         run: |
           git config --local user.name "${{ github.actor }}"

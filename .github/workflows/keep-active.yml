@@ -1,16 +1,25 @@
-name: learn-github-actions
+name: keep-active-task
 
-run-name: ${{ github.actor }} is learning GitHub Actions
+run-name: ${{ github.actor }} trigger workflow
 
-on: [push]
+on:
+  schedule:
+    - cron "53 11 * * 1,3,4,5,6"
 
 jobs:
-  check-bats-version:
+  keep-live:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+      - name: Clone repository
+        uses: actions/checkout@v3
+      
+      - name: Execute Workflow
+        run: |
+          git config --local user.name "${{ github.actor }}"
+          git config --local user.email "wisdom.geeker@gmail.com"
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git pull --rebase
+          git commit --allow-empty -m "keep workflow active"
+          git push

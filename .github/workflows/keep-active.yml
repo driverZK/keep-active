@@ -3,6 +3,9 @@ name: keep-active-task
 run-name: ${{ github.actor }} trigger workflow
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron "53 11 * * 1,3,4,5,6"
 
